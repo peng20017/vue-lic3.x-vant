@@ -5,8 +5,8 @@
 import axios from '@/tools/http' // 导入http中创建的axios实例
 
 const test = {
-  jssdk () {
-    return axios.get('/wx/bczc/get_token11.php')
+  jssdk (url) {
+    return axios.get(`/wx/xx/jssdk.php?url=${location.href.split('#')[0]}`)
   }
 }
 

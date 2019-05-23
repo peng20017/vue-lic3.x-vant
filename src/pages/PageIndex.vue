@@ -1,6 +1,11 @@
 <template>
   <div class="home">
+    <button @click="chooseImg">chooseImg</button>
+    <van-uploader :after-read="onRead">
+      <van-icon name="photograph" />
+    </van-uploader>
     <div class="test"></div>
+    <input type="file" class="js-upload" accept="image/*">
     <van-button type="primary">默认按钮</van-button>
     <van-cell-group>
       <van-cell title="单元格" value="内容"/>
@@ -30,8 +35,7 @@
 
 <script>
 // @ is an alias to /src
-
-import { Button, Cell, CellGroup, Picker, Tabbar, TabbarItem, Popup, Tab, Tabs, Toast } from 'vant'
+import { Button, Cell, CellGroup, Picker, Tabbar, TabbarItem, Popup, Tab, Tabs, Toast, Uploader, Icon } from 'vant'
 export default {
   name: 'home',
   components: {
@@ -43,7 +47,9 @@ export default {
     'van-tabbar-item': TabbarItem,
     'van-popup': Popup,
     'van-tabs': Tabs,
-    'van-tab': Tab
+    'van-tab': Tab,
+    'van-icon': Icon,
+    'van-uploader': Uploader
   },
   data () {
     return {
@@ -59,17 +65,22 @@ export default {
     },
     onClick (index, title) {
       this.$toast(title)
+    },
+    onRead (file) {
+      console.log(file)
+    },
+    chooseImg () {
+      this.$wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+          console.log(res)
+        }
+      })
     }
   },
   async created () {
-    Toast.loading({
-      message: 'loading',
-      position: 'top',
-      mask: !0
-    })
-    const res = await this.$api.test.jssdk()
-    console.log(res)
-    alert(await this.$api.test.jssdk())
   }
 }
 </script>
